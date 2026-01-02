@@ -43,9 +43,6 @@ local.properties
 .idea/
 .cxx/
 
-# android assets
-platform/android/app/src/main/assets/
-
 # kde
 .directory
 
