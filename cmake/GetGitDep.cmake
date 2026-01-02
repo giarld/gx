@@ -5,6 +5,8 @@ if (NOT GIT_EXECUTABLE)
     endif ()
 endif ()
 
+set(GET_GIT_DEP_FOUND TRUE)
+
 function(GetGitDependency git_uri dep_name branch)
     if (GIT_DEP_${dep_name}_FOUND)
         message(STATUS "Git dependency ${dep_name} found.")

@@ -39,8 +39,12 @@ if (NOT WIN32)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL ${T_LIBRARY_OUTPUT_PATH})
 endif ()
 
-if (NOT GIT_DEP_gany_FOUND)
+
+if (NOT GET_GIT_DEP_FOUND)
     include(cmake/GetGitDep.cmake)
+endif ()
+
+if (NOT GIT_DEP_gany_FOUND)
     GetGitDependency(git@github.com:giarld/gany.git gany master)
     add_subdirectory(deps/gany/gany-interface)
     add_subdirectory(deps/gany/gany-c-api)
