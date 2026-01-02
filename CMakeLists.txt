@@ -59,8 +59,10 @@ add_subdirectory(math)
 
 add_subdirectory(plugin/math)
 
-add_subdirectory(tools)
+if (BUILD_GX_TOOLS)
+    add_subdirectory(tools)
+endif ()
 
-if (NOT GX_HIDE_EXAMPLES)
+if (BUILD_GX_EXAMPLES)
     add_subdirectory(examples)
 endif ()
