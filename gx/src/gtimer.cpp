@@ -249,7 +249,8 @@ GTimer::GTimer(GTimer &&rh) noexcept
     : mScheduler(std::move(rh.mScheduler)),
       mEvent(std::move(rh.mEvent)),
       mCondition(std::move(rh.mCondition)),
-      mTask(std::move(rh.mTask))
+      mTask(std::move(rh.mTask)),
+      mOneShot(rh.mOneShot)
 {
 }
 
@@ -260,6 +261,7 @@ GTimer &GTimer::operator=(GTimer &&rh) noexcept
         mEvent = std::move(rh.mEvent);
         mCondition = std::move(rh.mCondition);
         mTask = std::move(rh.mTask);
+        mOneShot = rh.mOneShot;
     }
     return *this;
 }

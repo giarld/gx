@@ -115,7 +115,7 @@ using GTimerSchedulerPtr = std::shared_ptr<GTimerScheduler>;
 class GX_API GTimer : public GObject
 {
 public:
-    explicit GTimer(const std::shared_ptr<GTimerScheduler> &scheduler = nullptr, bool oneShot = false);
+    explicit GTimer(const GTimerSchedulerPtr &scheduler = nullptr, bool oneShot = false);
 
     explicit GTimer(bool oneShot);
 
