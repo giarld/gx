@@ -77,7 +77,7 @@ public:
      */
     void start();
 
-    void stop();
+    void stop(bool wait = true);
 
     bool isRunning() const;
 

@@ -185,12 +185,14 @@ void GTimerScheduler::start()
     mIsRunning.store(true);
 }
 
-void GTimerScheduler::stop()
+void GTimerScheduler::stop(bool wait)
 {
     if (mIsRunning.exchange(false)) {
         GLockerGuard locker(mLock);
-        while (!mTaskQueue.empty()) {
-            mTaskQueue.pop();
+        if (!wait) {
+            while (!mTaskQueue.empty()) {
+                mTaskQueue.pop();
+            }
         }
         mTaskCond.notify_all();
     }
