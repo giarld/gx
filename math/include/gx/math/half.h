@@ -242,6 +242,7 @@ struct is_arithmetic<math::half> : std::true_type
 
 namespace std
 {
+#if GX_COMPILER_MSVC
 template<>
 struct is_floating_point<math::half> : std::true_type
 {
@@ -254,6 +255,7 @@ template<>
 struct is_arithmetic<math::half> : std::true_type
 {
 };
+#endif
 
 template<>
 class numeric_limits<math::half>
