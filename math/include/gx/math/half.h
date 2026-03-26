@@ -227,6 +227,19 @@ constexpr half makeHalf(uint16_t bits) noexcept
     return half(half::binary, bits);
 }
 
+template<>
+struct is_floating_point<math::half> : std::true_type
+{
+};
+
+// note: this shouldn't be needed (is_floating_point<> is enough) but some version of msvc need it
+// This stopped working with MSVC 2019 16.4, so we specialize our own version of is_arithmetic in
+// the math namespace (see above).
+template<>
+struct is_arithmetic<math::half> : std::true_type
+{
+};
+
 #endif // __ARM_NEON
 
 constexpr half operator ""_h(long double v)
@@ -242,21 +255,6 @@ struct is_arithmetic<math::half> : std::true_type
 
 namespace std
 {
-#if GX_COMPILER_MSVC
-template<>
-struct is_floating_point<math::half> : std::true_type
-{
-};
-
-// note: this shouldn't be needed (is_floating_point<> is enough) but some version of msvc need it
-// This stopped working with MSVC 2019 16.4, so we specialize our own version of is_arithmetic in
-// the math namespace (see above).
-template<>
-struct is_arithmetic<math::half> : std::true_type
-{
-};
-#endif
-
 template<>
 class numeric_limits<math::half>
 {
