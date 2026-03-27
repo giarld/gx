@@ -242,7 +242,7 @@ struct is_arithmetic<math::half> : std::true_type
 
 namespace std
 {
-#if GX_COMPILER_MSVC
+#ifndef __ARM_NEON
 template<>
 struct is_floating_point<math::half> : std::true_type
 {
