@@ -21,7 +21,12 @@ void refGTimer()
             .func("run", &GTimerScheduler::run)
             .func("loop", &GTimerScheduler::loop)
             .func("start", &GTimerScheduler::start)
-            .func("stop", &GTimerScheduler::stop)
+            .func("stop", [](GTimerScheduler &self) {
+                self.stop();
+            })
+            .func("stop", [](GTimerScheduler &self, bool wait) {
+                self.stop(wait);
+            })
             .func("isRunning", &GTimerScheduler::isRunning)
             .func("post", &GTimerScheduler::post);
 
