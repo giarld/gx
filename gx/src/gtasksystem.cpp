@@ -46,8 +46,8 @@ void GTaskSystem::start()
         tNameS << mName << "_" << i;
 
         mThreads[i] = std::make_unique<GThread>([this] {
-            TaskFuncRef taskFuncRef;
             while (true) {
+                TaskFuncRef taskFuncRef;
                 {
                     GLocker<GMutex> locker(mLock);
                     mTaskCond.wait(locker, [this] {
