@@ -174,7 +174,35 @@ std::string archName()
 
 int execute(const std::string &cmd)
 {
-#if GX_PLATFORM_OS_DESKTOP
+#if GX_PLATFORM_WINDOWS
+    GWString wCmd = GString(cmd).toUtf16();
+
+    std::vector<wchar_t> comSpec(MAX_PATH);
+    DWORD size = ::GetEnvironmentVariableW(L"COMSPEC", comSpec.data(), static_cast<DWORD>(comSpec.size()));
+    if (size == 0 || size >= comSpec.size()) {
+        const GWString defaultCmd(L"C:\\Windows\\System32\\cmd.exe");
+        comSpec.assign(defaultCmd.data(), defaultCmd.data() + defaultCmd.length());
+        comSpec.push_back(L'\0');
+    }
+    std::wstring cmdPath(comSpec.data());
+    std::wstring commandLine = L"\"" + cmdPath + L"\" /d /s /c \"" + std::wstring(wCmd.data(), wCmd.length()) + L"\"";
+
+    STARTUPINFOW startupInfo{};
+    startupInfo.cb = sizeof(startupInfo);
+    PROCESS_INFORMATION processInfo{};
+    if (!::CreateProcessW(cmdPath.c_str(), commandLine.data(), nullptr, nullptr, FALSE, 0, nullptr, nullptr, &startupInfo, &processInfo)) {
+        return -1;
+    }
+
+    const DWORD waitResult = ::WaitForSingleObject(processInfo.hProcess, INFINITE);
+    DWORD exitCode = static_cast<DWORD>(-1);
+    if (waitResult != WAIT_FAILED) {
+        ::GetExitCodeProcess(processInfo.hProcess, &exitCode);
+    }
+    ::CloseHandle(processInfo.hThread);
+    ::CloseHandle(processInfo.hProcess);
+    return static_cast<int>(exitCode);
+#elif GX_PLATFORM_OS_DESKTOP
     return ::system(cmd.c_str());
 #else
     return -1;
