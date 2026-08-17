@@ -310,6 +310,9 @@ bool GDiskFileSystem::mkdirs(const GString &filePath) const
         return false;
     }
     int begin = 0;
+#if GX_PLATFORM_WINDOWS || GX_PLATFORM_WINRT
+    if (filePath.length() >= 3 && filePath.at(1) == ":" && filePath.at(2) == FILE_SEPARATOR) begin = 3;
+#endif
     while (begin >= 0) {
         const int p = filePath.indexOf(FILE_SEPARATOR, begin);
         if (p < 0) {
